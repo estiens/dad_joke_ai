@@ -1,5 +1,7 @@
 source 'https://rubygems.org' do
+  gem 'gingerice'
   gem 'httparty'
+  gem 'pragmatic_segmenter'
   gem 'rake'
   gem 'sinatra'
   gem 'sinatra-activerecord'
