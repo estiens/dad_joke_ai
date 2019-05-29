@@ -1,5 +1,8 @@
 source 'https://rubygems.org' do
+  gem 'httparty'
+  gem 'rake'
   gem 'sinatra'
+  gem 'sinatra-activerecord'
 
   group :test, :development do
     gem 'pry'

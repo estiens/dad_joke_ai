@@ -3,3 +3,9 @@ Style/FrozenStringLiteralComment:
 
 Style/BlockComments:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 12
