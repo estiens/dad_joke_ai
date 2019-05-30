@@ -10,6 +10,7 @@ module SetupService
       if File.exist?(JOKE_FILE)
         puts 'I already got jokes, no worries!'
       else
+        puts 'Well, first we gotta get some jokes...'
         fetch_them_all
       end
     end
@@ -21,7 +22,7 @@ module SetupService
       Dir.mkdir('shared') unless File.exist?('shared')
       File.open(JOKE_FILE, 'w') { |file| file.write(joke_text.to_json) }
       puts "Alright partner, I got you #{joke_text.length} jokes!"
-      puts "I hope that's enough..."
+      puts "I hope that's enough!"
     end
   end
 
@@ -35,7 +36,7 @@ module SetupService
     end
 
     def self.analyze_them_all
-      abort('You need to get the jokes first!') unless File.exist?(JOKE_FILE)
+      raise 'You need to get the jokes first!' unless File.exist?(JOKE_FILE)
       puts "Now analyzing jokes! I'm good at this, cause I'm a computer!"
       source_text = JSON.parse(File.open(JOKE_FILE, 'r', &:read)).join(' ')
       MarkovDictionary.new(source_text: source_text, file: DICT_FILE).create_dictionary
