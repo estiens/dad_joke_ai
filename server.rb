@@ -14,17 +14,27 @@ class MarkovModel
     @model = MagicMarkov.new(dictionary)
   end
 
+  def self.test_init
+    dictionary_file = 'shared/test.json'
+    source_text = 'The cat is a bird. Is the boy not a dog? A boy went home. A dog went home.'
+    MarkovDictionary.new(source_text: source_text, file: dictionary_file).create_dictionary
+    dictionary = MarkovDictionary.load_dictionary(dictionary_file)
+    @model = MagicMarkov.new(dictionary)
+  end
+
   def self.model
     @model
   end
 end
 
 configure do
-  unless settings.environment == :test
+  if settings.environment == :test
+    MarkovModel.test_init
+  else
     Setup::JokeFetcher.fetch_jokes
     Setup::JokeAnalyzer.analyze_jokes
+    MarkovModel.init
   end
-  MarkovModel.init
 end
 
 get '/' do
