@@ -78,20 +78,24 @@ def write_to_cache(cache_key, jokes)
   SuperBasicCache.write(cache_key, jokes)
 end
 
+def cache_key(num=nil, topic=nil)
+  "joke#{num}#{topic}"
+end
+
 def get_new_jokes(num, topic)
   jokes = []
   num.to_i.times do
     jokes << MarkovModel.model.generate_joke(topic)
   end
-  cache_key = "joke#{num}#{topic}"
+  cache_key = cache_key(num, topic)
   write_to_cache(cache_key, jokes)
   jokes
 end
 
 get '/joke' do
-  num = params[:num] || 1
+  num = [1, params[:num].to_i, 10].sort[1]
   topic = params[:topic]
-  cache_key = "joke#{num}#{topic}"
+  cache_key = cache_key(num, topic)
   jokes = fetch_from_cache(cache_key) || get_new_jokes(num, topic)
   return { jokes: jokes }.to_json
 end
