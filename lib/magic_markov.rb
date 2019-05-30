@@ -8,9 +8,13 @@ class MagicMarkov
   end
 
   def generate_joke(word = nil)
-    joke = generate_sentence(word)
-    rand(0..2).times { joke += " #{generate_sentence}" }
-    joke
+    if check_for_word(word)
+      joke = generate_sentence(word)
+      rand(0..2).times { joke += " #{generate_sentence}" }
+      joke
+    else
+      return false
+    end
   end
 
   private
@@ -22,7 +26,6 @@ class MagicMarkov
       sentence += "#{word} "
       word = get_next_word(word)
     end
-    sentence[0] = sentence[0].capitalize
     sentence = clean_sentence(sentence)
     "#{sentence}#{word}"
   end
@@ -36,6 +39,11 @@ class MagicMarkov
     rescue Gingerice::ConnectionError
       sentence
     end
+  end
+
+  def check_for_word(word)
+    return true unless word
+    @frequencies.keys.include?(word)
   end
 
   def get_next_word(word)
