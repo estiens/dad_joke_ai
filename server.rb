@@ -3,20 +3,28 @@ require 'pry'
 
 require_relative 'lib/magic_markov'
 require_relative 'lib/markov_dictionary'
+require_relative 'lib/setup'
 
 class MarkovModel
   def self.init
-    dictionary = MarkovDictionary.load_dictionary('./shared/frequency_hash.json')
-    @@model = MagicMarkov.new(dictionary)
+    filename = './shared/frequency_hash.json'
+    return unless File.exist?(filename)
+
+    dictionary = MarkovDictionary.load_dictionary(filename)
+    @model = MagicMarkov.new(dictionary)
   end
 
   def self.model
-    @@model
+    @model
   end
 end
 
 configure do
-  MarkovModel::init()
+  unless settings.environment == :test
+    Setup::JokeFetcher.fetch_jokes
+    Setup::JokeAnalyzer.analyze_jokes
+  end
+  MarkovModel.init
 end
 
 get '/' do

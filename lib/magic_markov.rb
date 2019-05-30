@@ -13,7 +13,7 @@ class MagicMarkov
       rand(0..2).times { joke += " #{generate_sentence}" }
       joke
     else
-      return false
+      false
     end
   end
 
@@ -43,6 +43,7 @@ class MagicMarkov
 
   def check_for_word(word)
     return true unless word
+
     @frequencies.keys.include?(word)
   end
 

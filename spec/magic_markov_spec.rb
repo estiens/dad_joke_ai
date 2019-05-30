@@ -39,7 +39,7 @@ describe 'markov chain' do
       markov_model = MagicMarkov.new(@dictionary)
       expect(markov_model.send(:get_next_word, 'cat')).to eq 'is'
 
-      expect(['a', 'not', 'the']).to include markov_model.send(:get_next_word ,'is')
+      expect(%w[a not the]).to include markov_model.send(:get_next_word, 'is')
     end
 
     it 'should always finish with a punctuation mark' do
