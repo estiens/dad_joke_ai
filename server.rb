@@ -13,17 +13,18 @@ class SuperBasicCache
   end
 
   def self.fetch(key)
-    if @cache.key?(key) && (@cache[key][:expiration_time].to_i > Time.now.to_i)
-      message = "fetched value from cache for #{key} "
-      message += "will expire in #{@cache[key][:expiration_time] - Time.now.to_i}"
-      puts message
-      @cache[key][:value]
-    end
+    return nil unless @cache.key?(key)
+    return nil unless @cache[key][:expiration_time].to_i > Time.now.to_i
+
+    message = "fetched value from cache for #{key} "
+    message += "will expire in #{@cache[key][:expiration_time] - Time.now.to_i}"
+    puts message
+    @cache[key][:value]
   end
 
   def self.write(key, value)
-    "puts writing #{value} to #{key} in cache"
-    @cache[key] = {value: value, expiration_time: Time.now.to_i + EXPIRES}
+    puts "writing #{value} to #{key} in cache"
+    @cache[key] = { value: value, expiration_time: Time.now.to_i + EXPIRES }
   end
 end
 
@@ -44,8 +45,8 @@ class MarkovModel
     @model = MagicMarkov.new(dictionary)
   end
 
-  def self.model
-    @model
+  class << self
+    attr_reader :model
   end
 end
 
@@ -67,11 +68,13 @@ end
 def fetch_from_cache(cache_key)
   return nil if settings.environment == :test
   return nil if params[:cache] == 'false'
+
   SuperBasicCache.fetch(cache_key)
 end
 
 def write_to_cache(cache_key, jokes)
   return if settings.environment == :test
+
   SuperBasicCache.write(cache_key, jokes)
 end
 
@@ -92,4 +95,3 @@ get '/joke' do
   jokes = fetch_from_cache(cache_key) || get_new_jokes(num, topic)
   return { jokes: jokes }.to_json
 end
-
