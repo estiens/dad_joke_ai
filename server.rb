@@ -5,6 +5,28 @@ require_relative 'lib/magic_markov'
 require_relative 'lib/markov_dictionary'
 require_relative 'lib/setup'
 
+class SuperBasicCache
+  EXPIRES = 30
+
+  def self.init
+    @cache = {}
+  end
+
+  def self.fetch(key)
+    if @cache.key?(key) && (@cache[key][:expiration_time].to_i > Time.now.to_i)
+      message = "fetched value from cache for #{key} "
+      message += "will expire in #{@cache[key][:expiration_time] - Time.now.to_i}"
+      puts message
+      @cache[key][:value]
+    end
+  end
+
+  def self.write(key, value)
+    "puts writing #{value} to #{key} in cache"
+    @cache[key] = {value: value, expiration_time: Time.now.to_i + EXPIRES}
+  end
+end
+
 class MarkovModel
   def self.init
     filename = './shared/frequency_hash.json'
@@ -34,6 +56,7 @@ configure do
     Setup::JokeFetcher.fetch_jokes
     Setup::JokeAnalyzer.analyze_jokes
     MarkovModel.init
+    SuperBasicCache.init
   end
 end
 
@@ -41,12 +64,32 @@ get '/' do
   'Hello World'
 end
 
-get '/joke' do
+def fetch_from_cache(cache_key)
+  return nil if settings.environment == :test
+  return nil if params[:cache] == 'false'
+  SuperBasicCache.fetch(cache_key)
+end
+
+def write_to_cache(cache_key, jokes)
+  return if settings.environment == :test
+  SuperBasicCache.write(cache_key, jokes)
+end
+
+def get_new_jokes(num, topic)
   jokes = []
-  num = params['num'] || 1
-  topic = params['topic']
   num.to_i.times do
     jokes << MarkovModel.model.generate_joke(topic)
   end
+  cache_key = "joke#{num}#{topic}"
+  write_to_cache(cache_key, jokes)
+  jokes
+end
+
+get '/joke' do
+  num = params[:num] || 1
+  topic = params[:topic]
+  cache_key = "joke#{num}#{topic}"
+  jokes = fetch_from_cache(cache_key) || get_new_jokes(num, topic)
   return { jokes: jokes }.to_json
 end
+
