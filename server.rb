@@ -3,7 +3,7 @@ require 'pry'
 
 require_relative 'lib/magic_markov'
 require_relative 'lib/markov_dictionary'
-require_relative 'lib/setup'
+require_relative 'services/setup_service'
 
 class SuperBasicCache
   EXPIRES = 30
@@ -54,8 +54,8 @@ configure do
   if settings.environment == :test
     MarkovModel.test_init
   else
-    Setup::JokeFetcher.fetch_jokes
-    Setup::JokeAnalyzer.analyze_jokes
+    SetupService::JokeFetcher.fetch_jokes
+    SetupService::JokeAnalyzer.analyze_jokes
     MarkovModel.init
     SuperBasicCache.init
   end
