@@ -38,7 +38,8 @@ class MarkovModel
   end
 
   def self.test_init
-    dictionary_file = 'shared/test.json'
+    Dir.mkdir('tmp') unless File.exist?('tmp')
+    dictionary_file = File.expand_path 'tmp/request_test.json', __dir__
     source_text = 'The cat is a bird. Is the boy not a dog? A boy went home. A dog went home.'
     MarkovDictionary.new(source_text: source_text, file: dictionary_file).create_dictionary
     dictionary = MarkovDictionary.load_dictionary(dictionary_file)

@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe 'markov chain' do
   before(:all) do
-    @dictionary_file = 'test.json'
+    @dictionary_file = File.expand_path '../../tmp/test.json', __dir__
     @source_text = 'The cat is a bird. Is the boy not a dog? A boy went home. A dog went home.'
     MarkovDictionary.new(source_text: @source_text, file: @dictionary_file).create_dictionary
     @dictionary = MarkovDictionary.load_dictionary(@dictionary_file)

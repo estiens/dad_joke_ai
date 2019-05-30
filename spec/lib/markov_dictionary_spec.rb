@@ -4,13 +4,8 @@ require_relative '../spec_helper'
 # load a dictionary, and the dictionary has the correct hashes
 
 describe 'markov frequency dictionary' do
-  let(:dictionary_file) { 'test.json' }
+  let(:dictionary_file) { File.expand_path '../../tmp/dict_.json', __dir__ }
   let(:source_text) { 'The cat is a bird. Is the boy not a dog? A boy went home. A dog went home.' }
-
-  before(:each) do
-    MarkovDictionary.new(source_text: source_text, file: dictionary_file).create_dictionary
-    @dictionary = MarkovDictionary.load_dictionary(dictionary_file)
-  end
 
   after(:each) do
     File.delete(dictionary_file) if File.exist?(dictionary_file)
