@@ -37,6 +37,7 @@ module SetupService
 
     def self.analyze_them_all
       raise 'You need to get the jokes first!' unless File.exist?(JOKE_FILE)
+
       puts "Now analyzing jokes! I'm good at this, cause I'm a computer!"
       source_text = JSON.parse(File.open(JOKE_FILE, 'r', &:read)).join(' ')
       MarkovDictionary.new(source_text: source_text, file: DICT_FILE).create_dictionary

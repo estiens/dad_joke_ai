@@ -78,7 +78,7 @@ def write_to_cache(cache_key, jokes)
   SuperBasicCache.write(cache_key, jokes)
 end
 
-def cache_key(num=nil, topic=nil)
+def cache_key(num = nil, topic = nil)
   "joke#{num}#{topic}"
 end
 
