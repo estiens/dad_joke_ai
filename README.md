@@ -49,4 +49,8 @@ So essentially, if we grab a random value from that array, we have a 50% chance 
 
 ## CACHEING
 
+There is a cache with a default expiration time of 30 seconds. If you make the same request, you'll hit it. However, you can skip the cache by simply passing in a cache param like so.
+
+`/jokes?cache=false`
+
 
