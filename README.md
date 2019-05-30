@@ -1,5 +1,9 @@
 # Ye Olde Readethme
 
+[![CircleCI](https://circleci.com/gh/estiens/dad_joke_ai/tree/master.svg?style=svg)](https://circleci.com/gh/estiens/dad_joke_ai/tree/master)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/5e2487176961c8e5e864/maintainability)](https://codeclimate.com/github/estiens/dad_joke_ai/maintainability)
+
 This is a little app that generates dad jokes based on markov chains.
 
 Source text is taken from `https://icanhazdadjoke.com`
