@@ -1,4 +1,4 @@
-require_relative '../lib/markov_dictionary'
+require_relative '../spec_helper'
 
 # high level end to end spec that makes sure our dictionary service can create a dictionary,
 # load a dictionary, and the dictionary has the correct hashes

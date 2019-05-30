@@ -1,5 +1,4 @@
-require_relative '../lib/magic_markov'
-require_relative '../lib/markov_dictionary'
+require_relative '../spec_helper'
 
 describe 'markov chain' do
   before(:all) do

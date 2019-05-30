@@ -4,6 +4,9 @@ require 'rspec'
 ENV['RACK_ENV'] = 'test'
 
 require File.expand_path '../server.rb', __dir__
+require File.expand_path '../lib/magic_markov.rb', __dir__
+require File.expand_path '../lib/markov_dictionary.rb', __dir__
+
 
 module RSpecMixin
   include Rack::Test::Methods
@@ -12,5 +15,4 @@ module RSpecMixin
   end
 end
 
-# For RSpec 2.x and 3.x
 RSpec.configure { |c| c.include RSpecMixin }
